@@ -9,11 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            NavigationLink {
+                OldChartsView()
+            } label: {
+                Text("Old Way")
+            }
+
+            NavigationLink(destination: {
+                NewChartsView()
+            }, label: {
+                Text("New Way")
+            })
+            .navigationTitle("Charts that do not represent my weight")
         }
     }
 }
