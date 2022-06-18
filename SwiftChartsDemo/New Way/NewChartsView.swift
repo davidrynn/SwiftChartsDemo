@@ -10,15 +10,16 @@ import Charts
 
 struct NewChartsView: View {
     @EnvironmentObject var dataSource: DataSource
-    @State var toggleChartType: Bool = true
+    @State var isBarChart: Bool = true
     var body: some View {
         VStack {
-            Toggle(isOn: $toggleChartType) {
-                Text(toggleChartType ? "Bar" : "Line")
+            Toggle(isOn: $isBarChart) {
+                Text(isBarChart ? "Bar" : "Line")
             }
+            Spacer()
             Chart {
                 ForEach(dataSource.models) { point in
-                    if toggleChartType {
+                    if isBarChart {
                         if let date = point.date {
                             BarMark(x: .value(point.xLabel, date), y: .value(point.yLabel, point.yValue))
                         } else {
