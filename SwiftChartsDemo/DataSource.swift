@@ -14,10 +14,13 @@ class DataSource: ObservableObject {
         self.models = DataSource.createModels()
     }
                               
-    private static func createModels() -> [DataPoint] {
+    static func createModels() -> [DataPoint] {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yy"
-        let dateStrings = ["06/08/2022",
+        let dateStrings = ["06/05/2022",
+                           "06/06/2022",
+                           "06/07/2022",
+                           "06/08/2022",
                            "06/09/2022",
                            "06/10/2022",
                            "06/11/2022",
@@ -31,7 +34,10 @@ class DataSource: ObservableObject {
                            "06/19/2022",
                            "06/20/2022",
                            "06/21/2022"]
-        let values: [Double] = [ 161.0,
+        let values: [Double] = [ 156.0,
+                                 156.0,
+                                 158.0,
+                                 161.0,
                                  160.5,
                                  161.1,
                                  162.0,
@@ -45,11 +51,10 @@ class DataSource: ObservableObject {
                                  170.0,
                                  171.0,
                                  170.3]
-                                 
+        guard values.count == dateStrings.count else { fatalError("data counts don't match") }
         let models: [DataPoint] = (0...dateStrings.count-1).compactMap { index in
             guard let date = formatter.date(from: dateStrings[index]) else { return nil }
-            let timeValue = date.timeIntervalSince1970
-            return DataPoint(date: date, xValue: timeValue, xLabel: "date", yValue: values[index], yLabel: "weight")
+            return DataPoint(xValue: date, yValue: values[index])
         }
         return models
     }

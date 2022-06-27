@@ -21,7 +21,7 @@ struct ContentView: View {
             }, label: {
                 Text("New Way")
             })
-            .navigationTitle("Charts that do not represent my weight")
+            .navigationTitle("Charts weight/time")
         }
     }
 }

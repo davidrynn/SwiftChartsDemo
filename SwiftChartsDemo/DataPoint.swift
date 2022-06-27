@@ -9,9 +9,6 @@ import Foundation
 
 struct DataPoint: Codable, Identifiable {
     var id: UUID = UUID()
-    var date: Date? = nil
-    let xValue: Double
-    let xLabel: String
+    let xValue: Date
     let yValue: Double
-    let yLabel: String
 }

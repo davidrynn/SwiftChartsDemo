@@ -9,18 +9,22 @@ import SwiftUI
 
 struct OldChartsView: View {
     @EnvironmentObject var dataSource: DataSource
-    @State var isBarChart = true
+    @State var currentType = "bar"
+    private var graphTypes = ["bar", "line"]
     var highestData: Double {
         return dataSource.models.max { $0.yValue > $1.yValue }?.yValue ?? 0
     }
     var body: some View {
         VStack {
-            Toggle(isBarChart ? "Bar" : "Line", isOn: $isBarChart)
-                .padding()
-            //if bar graph
+            Picker("Graph type", selection: $currentType) {
+                ForEach(graphTypes, id: \.self) {
+                    Text($0)
+                }
+            }
+            .pickerStyle(.segmented)
             Spacer()
             HStack {
-                if isBarChart {
+                if currentType == "bar" {
                     GeometryReader { geometry in
                         HStack(alignment: .bottom, spacing: 4.0) {
                             ForEach(dataSource.models.indices, id: \.self) { index in
@@ -41,17 +45,17 @@ struct OldChartsView: View {
                         let height = geometry.size.height
                         let width = geometry.size.width
                         let indexStart = dataSource.models.count > Int(width) ? dataSource.models.count - Int(width) : 0
-//                        Path { path in
-//                            path.move(to: CGPoint(x: 0, y: height * self.ratio(for: 0)))
-//                            for index in indexStart..<dataSource.models.count {
-//                                let point = CGPoint(
-//                                    x: CGFloat(index) * width / CGFloat(dataSource.models.count - 1),
-//                                    y: height * self.ratio(for: index))
-//                                path.addEllipse(in: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4))
-//                            }
-//                            path.closeSubpath()
-//                        }
-//                        .fill()
+                        Path { path in
+                            path.move(to: CGPoint(x: 0, y: height * self.ratio(for: 0)))
+                            for index in indexStart..<dataSource.models.count {
+                                let point = CGPoint(
+                                    x: CGFloat(index) * width / CGFloat(dataSource.models.count - 1),
+                                    y: height * self.ratio(for: index))
+                                path.addEllipse(in: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4))
+                            }
+                            path.closeSubpath()
+                        }
+                        .fill()
 
                         Path { path in
                             path.move(to: CGPoint(x: 0, y: height * self.ratio(for: 0)))
